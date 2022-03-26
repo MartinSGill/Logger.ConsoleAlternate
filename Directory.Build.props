@@ -1,0 +1,64 @@
+﻿<Project>
+
+  <PropertyGroup Label="Folders">
+    <SrcFolder>$(MSBuildThisFileDirectory)src\</SrcFolder>
+    <TestFolder>$(MSBuildThisFileDirectory)test\</TestFolder>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+
+  <PropertyGroup Label="PackageVersions">
+    <VerAnnotations>*</VerAnnotations>
+    <VerNetAnalyzers>*</VerNetAnalyzers>
+    <VerMetrics>*</VerMetrics>
+    <VerSonarAnalyzers>*</VerSonarAnalyzers>
+    <VerXUnit>*</VerXUnit>
+    <VerXUnitAnalyzer>*</VerXUnitAnalyzer>
+    <VerMoq>*</VerMoq>
+    <VerMoqAnalyzers>*</VerMoqAnalyzers>
+    <VerFluentAssertions>*</VerFluentAssertions>
+    <VerFluentAssertionsAnalyzers>*</VerFluentAssertionsAnalyzers>
+  </PropertyGroup>
+
+  <ItemGroup Label="Default Analyzers">
+    <!-- Code Helpers -->
+    <PackageReference Include="JetBrains.Annotations" Version="$(VerAnnotations)"/>
+
+    <!-- Meta Package for all MS Analyzers -->
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="$(VerNetAnalyzers)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="$(VerMetrics)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="$(VerSonarAnalyzers)"/>
+  </ItemGroup>
+
+  <ItemGroup Label="Test Projects" Condition="$(MSBuildProjectName.EndsWith('Tests'))">
+    <PackageReference Include="Xunit" Version="$(VerXUnit)"/>
+    <PackageReference Include="xunit.analyzers" Version="$(VerXUnitAnalyzer)"/>
+    <PackageReference Include="Moq" Version="$(VerMoq)"/>
+    <PackageReference Include="Moq.Analyzers" Version="$(VerMoqAnalyzers)"/>
+    <PackageReference Include="FluentAssertions.Analyzers" Version="$(VerFluentAssertions)"/>
+    <PackageReference Include="FluentAssertions.Analyzers" Version="$(VerFluentAssertionsAnalyzers)"/>
+  </ItemGroup>
+
+  <PropertyGroup Label="Settings for released projects" Condition="!$(MSBuildProjectName.EndsWith('Tests'))">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Analyzers -->
+  <PropertyGroup Label="Analyzer Settings">
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>$(TreatWarningsAsErrors)</WarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors>$(TreatWarningsAsErrors)</CodeAnalysisTreatWarningsAsErrors>
+
+    <NoWarn>$(NoWarn)</NoWarn>
+  </PropertyGroup>
+
+</Project>
